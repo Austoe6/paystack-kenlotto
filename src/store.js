@@ -1,27 +1,54 @@
 const fs = require('fs');
 const path = require('path');
 
-const STORE_PATH = path.join(__dirname, '..', 'data', 'invoices.json');
+// Vercel/Serverless has read-only filesystem for code; only /tmp is writable and ephemeral.
+const IS_SERVERLESS = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.NOW_REGION;
+const FILE_STORE_PATH = IS_SERVERLESS ? '/tmp/invoices.json' : path.join(__dirname, '..', 'data', 'invoices.json');
+
+let useMemoryStore = false;
+let memoryInvoices = [];
 
 function ensureStore() {
-	if (!fs.existsSync(STORE_PATH)) {
-		fs.mkdirSync(path.dirname(STORE_PATH), { recursive: true });
-		fs.writeFileSync(STORE_PATH, JSON.stringify([], null, 2), 'utf8');
+	try {
+		const dir = path.dirname(FILE_STORE_PATH);
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir, { recursive: true });
+		}
+		if (!fs.existsSync(FILE_STORE_PATH)) {
+			fs.writeFileSync(FILE_STORE_PATH, JSON.stringify([], null, 2), 'utf8');
+		}
+	} catch (err) {
+		useMemoryStore = true;
 	}
 }
 
 function readAll() {
+	if (useMemoryStore) {
+		return memoryInvoices;
+	}
 	ensureStore();
-	const raw = fs.readFileSync(STORE_PATH, 'utf8');
 	try {
+		const raw = fs.readFileSync(FILE_STORE_PATH, 'utf8');
 		return JSON.parse(raw);
-	} catch {
-		return [];
+	} catch (err) {
+		// On any read error, fallback to memory store
+		useMemoryStore = true;
+		return memoryInvoices;
 	}
 }
 
 function writeAll(invoices) {
-	fs.writeFileSync(STORE_PATH, JSON.stringify(invoices, null, 2), 'utf8');
+	if (useMemoryStore) {
+		memoryInvoices = invoices;
+		return;
+	}
+	try {
+		fs.writeFileSync(FILE_STORE_PATH, JSON.stringify(invoices, null, 2), 'utf8');
+	} catch (err) {
+		// Fallback to memory if writing fails (e.g., EROFS)
+		useMemoryStore = true;
+		memoryInvoices = invoices;
+	}
 }
 
 function addInvoice(invoice) {
@@ -56,5 +83,4 @@ module.exports = {
 	getInvoiceByReference,
 	updateInvoiceByReference,
 };
-
 

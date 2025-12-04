@@ -109,6 +109,7 @@ Local testing tip: expose `http://localhost:4000/api/webhooks/paystack` (e.g., `
 
 ### Notes
 - For per-route serverless functions later, move logic into `api/*.js` and reuse `src/paystack.js` and `src/store.js`.
+ - Serverless storage: the filesystem is read-only; this API falls back to `/tmp` or in-memory storage on Vercel. For persistence, use a database (e.g., Postgres, Supabase, KV).
 
 ## Important
 - Ensure compliance with local regulations for lottery.
