@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 dotenv.config();
-const { nanoid } = require('nanoid');
+const crypto = require('crypto');
 const {
 	addInvoice,
 	getInvoiceById,
@@ -16,6 +16,11 @@ const {
 	charge,
 	verifyWebhookSignature,
 } = require('./paystack');
+
+function generateId(len) {
+	// Generate a hex string of desired length using secure random bytes
+	return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
+}
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -45,8 +50,8 @@ app.post('/api/invoices', (req, res) => {
 		return res.status(400).json({ error: 'amount must be a positive number in KES' });
 	}
 
-	const id = `inv_${nanoid(12)}`;
-	const reference = `ref_${nanoid(14)}`;
+	const id = `inv_${generateId(12)}`;
+	const reference = `ref_${generateId(14)}`;
 	const now = new Date().toISOString();
 
 	const invoice = {
