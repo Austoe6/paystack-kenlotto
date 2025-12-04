@@ -1,0 +1,65 @@
+[
+  {
+    "id": "inv_m34ZeFq0Wmht",
+    "reference": "ref_IX6-dLcFVSbCtR",
+    "email": "austoe6@gmail.com",
+    "phone": "254715599260",
+    "amount": 50,
+    "currency": "KES",
+    "description": "2x Lottery Tickets",
+    "items": [
+      {
+        "sku": "LOTTO-001",
+        "qty": 2
+      }
+    ],
+    "metadata": {
+      "customerId": "abc123"
+    },
+    "status": "pending",
+    "createdAt": "2025-12-04T09:02:02.779Z",
+    "updatedAt": "2025-12-04T09:02:02.779Z"
+  },
+  {
+    "id": "inv_ZwTUk59lvPwC",
+    "reference": "ref_KpBjm7WGYFfqlf",
+    "email": "austoe6@gmail.com",
+    "phone": "254715599260",
+    "amount": 50,
+    "currency": "KES",
+    "description": "2x Lottery Tickets",
+    "items": [
+      {
+        "sku": "LOTTO-001",
+        "qty": 2
+      }
+    ],
+    "metadata": {
+      "customerId": "abc123"
+    },
+    "status": "pending",
+    "createdAt": "2025-12-04T09:05:35.897Z",
+    "updatedAt": "2025-12-04T09:05:35.897Z"
+  },
+  {
+    "id": "inv_td-wZ-IxJ04w",
+    "reference": "ref_G4Z7ssXC2_Hk3P",
+    "email": "austoe6@gmail.com",
+    "phone": "254715599260",
+    "amount": 55,
+    "currency": "KES",
+    "description": "2x Lottery Tickets",
+    "items": [
+      {
+        "sku": "LOTTO-001",
+        "qty": 2
+      }
+    ],
+    "metadata": {
+      "customerId": "abc123"
+    },
+    "status": "pending",
+    "createdAt": "2025-12-04T09:45:26.703Z",
+    "updatedAt": "2025-12-04T09:45:26.703Z"
+  }
+]
